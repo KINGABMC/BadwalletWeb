@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { WalletApiService } from '../../../core/services/wallet-api';
-import { XofPipe } from '../../../shared/pipes/xof-pipe';
+import { WalletApiService } from '../../../../core/services/wallet-api';
+import { XofPipe } from '../../../../shared/pipes/xof-pipe';
 
 @Component({
   selector: 'app-wallet-list',

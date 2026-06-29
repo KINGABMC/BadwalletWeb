@@ -1,17 +1,18 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { WalletApiService } from '../../../../core/services/wallet-api';
-import { BalanceStore } from '../../../../core/services/balance-store';
-import { XofPipe } from '../../../../shared/pipes/xof-pipe';
+import { WalletApiService } from '../../../core/services/wallet-api';
+import { BalanceStore } from '../../../core/services/balance-store';
+import { XofPipe } from '../../../shared/pipes/xof-pipe';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, XofPipe],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  styleUrl: './dashboard.css',
+  encapsulation: ViewEncapsulation.None 
 })
 export class DashboardComponent {
   private walletApi = inject(WalletApiService);

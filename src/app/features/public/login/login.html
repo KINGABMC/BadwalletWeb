@@ -1,0 +1,16 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2>Espace Connexion 👋</h2>
+    <p class="subtitle">Choisissez votre profil pour accéder à BadWallet</p>
+    
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+      <button type="button" (click)="connectAs('AGENT')" class="btn-login" style="background: #0f172a;">
+        ⚙️ Connexion Espace Agent
+      </button>
+      
+      <button type="button" (click)="connectAs('CLIENT')" class="btn-login" style="background: #2563eb;">
+        👤 Connexion Espace Client
+      </button>
+    </div>
+  </div>
+</div>

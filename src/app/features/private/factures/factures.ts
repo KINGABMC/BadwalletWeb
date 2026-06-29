@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -16,7 +16,8 @@ import { XofPipe } from '../../../shared/pipes/xof-pipe';
     XofPipe
   ],
   templateUrl: './factures.html',
-  styleUrl: './factures.css'
+  styleUrl: './factures.css',
+  encapsulation: ViewEncapsulation.None 
 })
 export class FacturesComponent implements OnInit {
   private fb = inject(FormBuilder);

@@ -1,47 +1,61 @@
 import { Routes } from '@angular/router';
 
+// Imports des structures enveloppes (Features)
+import { PublicFeature } from './features/public/public';
+import { Private } from './layouts/private/private'; // S'adapte au nom exporté dans ton private.ts
+
+// Imports des composants de l'Espace Public
+import { Login } from './features/public/login/login';
+
+// Imports des composants de l'Espace Agent (Admin)
+import { WalletListComponent } from './features/private/wallet-management/wallet-list/wallet-list';
+import { WalletCreateComponent } from './features/private/wallet-management/wallet-create/wallet-create';
+import { WalletActionsComponent } from './features/private/wallet-management/wallet-actions/wallet-actions';
+
+// Imports des composants de l'Espace Client
+import { DashboardComponent } from './features/private/dashboard/dashboard';
+import { TransferComponent } from './features/private/transfert/transfert';
+import { FacturesComponent } from './features/private/factures/factures';
+import { PrivateComponent } from './features/private/private';
+
 export const routes: Routes = [
   // ==========================================
-  // ⚙️ ESPACE AGENT DE GUICHET (ADMIN)
+  // 🔓 ZONE PUBLIQUE
   // ==========================================
-  {
-    path: 'admin/wallets',
-    loadComponent: () => import('./features/wallet-management/wallet-list/wallet-list')
-      .then(m => m.WalletListComponent)
-  },
-  {
-    path: 'admin/wallets/create',
-    loadComponent: () => import('./features/wallet-management/wallet-create/wallet-create')
-      .then(m => m.WalletCreateComponent)
-  },
-  {
-    path: 'admin/wallets/actions',
-    loadComponent: () => import('./features/wallet-management/wallet-actions/wallet-actions')
-      .then(m => m.WalletActionsComponent)
+  { 
+    path: 'public', 
+    component: PublicFeature,
+    children: [
+      { path: 'login', component: Login },
+      { path: '', redirectTo: 'login', pathMatch: 'full' }
+    ]
   },
 
   // ==========================================
-  // 👤 ESPACE CLIENT FINAL (SELF-SERVICE)
+  // 🔒 ZONE PRIVÉE
   // ==========================================
-  {
-    path: 'client/dashboard',
-    loadComponent: () => import('./features/transactions/dashboard/dashboard/dashboard')
-      .then(m => m.DashboardComponent)
-  },
-  {
-    path: 'client/transfer',
-    loadComponent: () => import('./features/transactions/transfert/transfert') // Vérifie bien si ton fichier s'appelle 'transfert.ts' ou 'transfer.component.ts'
-      .then(m => m.TransferComponent)
-  },
-  {
-    path: 'client/factures',
-    loadComponent: () => import('./features/transactions/factures/factures')
-      .then(m => m.FacturesComponent)
+  { 
+    path: 'private', 
+    component: PrivateComponent,
+    children: [
+      // ⚙️ Routes Agent (Admin)
+      { path: 'admin/wallets', component: WalletListComponent },
+      { path: 'admin/wallets/create', component: WalletCreateComponent },
+      { path: 'admin/wallets/actions', component: WalletActionsComponent },
+
+      // 👤 Routes Client
+      { path: 'client/dashboard', component: DashboardComponent },
+      { path: 'client/transfer', component: TransferComponent },
+      { path: 'client/factures', component: FacturesComponent },
+
+      // Redirection interne de la zone privée
+      { path: '', redirectTo: 'client/dashboard', pathMatch: 'full' }
+    ]
   },
 
   // ==========================================
-  // 🔄 REDIRECTION PAR DÉFAUT
+  // 🔄 REDIRECTIONS GLOBALES
   // ==========================================
-  { path: '', redirectTo: 'admin/wallets', pathMatch: 'full' },
-  { path: '**', redirectTo: 'admin/wallets' } // Sécurité pour les fausses URLs
+  { path: '', redirectTo: '/public/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/public/login' }
 ];

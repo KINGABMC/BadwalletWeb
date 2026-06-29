@@ -1,0 +1,29 @@
+<nav class="navbar">
+  <div class="logo" routerLink="/public/login" style="cursor: pointer;">BadWallet Dashboard</div>
+  
+  <div class="nav-links">
+    @if (securityService.currentUserRole() === 'AGENT') {
+      <span class="section-title">⚙️ Agent :</span>
+      <a routerLink="/private/admin/wallets" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Portefeuilles</a>
+      <a routerLink="/private/admin/wallets/create" routerLinkActive="active">Inscrire Client</a>
+      <a routerLink="/private/admin/wallets/actions" routerLinkActive="active">Dépôt / Retrait</a>
+    }
+    
+    @if (securityService.currentUserRole() === 'CLIENT') {
+      <span class="section-title">👤 Client :</span>
+      <a routerLink="/private/client/dashboard" routerLinkActive="active">Mon Espace</a>
+      <a routerLink="/private/client/transfer" routerLinkActive="active">Transfert</a>
+      <a routerLink="/private/client/factures" routerLinkActive="active">Factures</a>
+    }
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 1rem;">
+    <div class="user-info">
+      <span class="balance-badge">Solde : {{ balanceStore.balance() | xof }}</span>
+    </div>
+    
+    <button (click)='onLogout()' style="background: #ef4444; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; cursor: pointer;">
+      Déconnexion
+    </button>
+  </div>
+</nav>

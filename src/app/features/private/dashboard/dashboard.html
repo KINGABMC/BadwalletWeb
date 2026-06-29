@@ -1,0 +1,83 @@
+<div class="dashboard-wrapper">
+  
+  <div *ngIf="!isLoggedIn" class="form-container">
+    <div class="form-card">
+      <h2>Espace Client - Connexion 👤</h2>
+      <p class="subtitle">Veuillez saisir votre numéro de téléphone pour accéder à votre espace BadWallet.</p>
+      
+      <div class="form-group">
+        <label>Numéro de téléphone</label>
+        <input type="text" [(ngModel)]="clientPhone" placeholder="Ex: +221771234567">
+      </div>
+      
+      <button (click)="onLogin()" class="btn-submit">
+        Accéder au Dashboard
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoggedIn" class="dashboard-container">
+    
+    <div class="balance-card">
+      <div class="balance-info">
+        <h3>Mon Solde Actuel</h3>
+        <h1 class="balance-amount">{{ balanceStore.balance() | xof }}</h1>
+        <p class="account-number">💳 Compte : <strong>{{ clientPhone }}</strong></p>
+      </div>
+      <div class="balance-actions">
+        <button routerLink="/private/client/transfer" class="btn-action">
+          💸 Faire un Transfert
+        </button>
+      </div>
+    </div>
+
+    <div class="transactions-section">
+      <div class="section-header">
+        <h3>Historique de mes Transactions</h3>
+      </div>
+      
+      <div *ngIf="isLoadingTransactions" class="loader">
+        <div class="spinner"></div> Chargement de l'historique...
+      </div>
+      
+      <div *ngIf="!isLoadingTransactions && transactions.length === 0" class="no-data">
+        <div class="no-data-icon">📭</div>
+        <p>Aucune transaction effectuée sur ce compte pour le moment.</p>
+      </div>
+
+      <div *ngIf="!isLoadingTransactions && transactions.length > 0" class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Date / Heure</th>
+              <th>Type</th>
+              <th>Montant</th>
+              <th>Description / Réf</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let tx of transactions">
+              <td class="date-cell">{{ tx.createdAt | date:'short' }}</td>
+              <td>
+                <span class="badge" [ngClass]="{
+                  'badge-in': tx.type === 'DEPOSIT' || tx.type === 'TRANSFER_IN', 
+                  'badge-out': tx.type === 'WITHDRAW' || tx.type === 'TRANSFER_OUT'
+                }">
+                  {{ tx.type }}
+                </span>
+              </td>
+              <td class="amount-cell" [ngClass]="{
+                'text-success': tx.type === 'DEPOSIT' || tx.type === 'TRANSFER_IN', 
+                'text-danger': tx.type === 'WITHDRAW' || tx.type === 'TRANSFER_OUT'
+              }">
+                {{ (tx.type === 'WITHDRAW' || tx.type === 'TRANSFER_OUT' ? -tx.amount : tx.amount) | xof }}
+              </td>
+              <td class="desc-cell">{{ tx.description || 'N/A' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>

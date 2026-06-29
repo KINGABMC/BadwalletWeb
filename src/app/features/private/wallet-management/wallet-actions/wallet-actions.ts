@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { WalletApiService } from '../../../core/services/wallet-api';
-import { XofPipe } from '../../../shared/pipes/xof-pipe';
+import { WalletApiService } from '../../../../core/services/wallet-api';
+import { XofPipe } from '../../../../shared/pipes/xof-pipe';
 
 @Component({
   selector: 'app-wallet-actions',
