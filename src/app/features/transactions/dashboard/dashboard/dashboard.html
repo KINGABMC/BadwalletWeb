@@ -1,0 +1,60 @@
+<div class="client-dashboard">
+  
+  <div *ngIf="!isLoggedIn" class="login-box">
+    <h2>Espace Client - Connexion</h2>
+    <p>Veuillez saisir votre numéro de téléphone pour accéder à votre espace BadWallet.</p>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="clientPhone" placeholder="Ex: +221771234567">
+      <button (click)="onLogin()" class="btn-primary">Accéder au Dashboard</button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoggedIn" class="dashboard-content">
+    
+    <div class="balance-card">
+      <h3>Mon Solde Actuel</h3>
+      <h1 class="balance-amount">{{ balanceStore.balance() | xof }}</h1>
+      <p>Compte : {{ clientPhone }}</p>
+      
+      <div class="quick-actions">
+        <button routerLink="/client/transfer" class="btn-action">💸 Faire un Transfert</button>
+      </div>
+    </div>
+
+    <div class="transactions-section">
+      <h3>Historique de mes Transactions</h3>
+      
+      <div *ngIf="isLoadingTransactions" class="loader">Chargement de l'historique...</div>
+      
+      <div *ngIf="!isLoadingTransactions && transactions.length === 0" class="no-data">
+        Aucune transaction effectuée sur ce compte pour le moment.
+      </div>
+
+      <table *ngIf="!isLoadingTransactions && transactions.length > 0" class="data-table">
+        <thead>
+          <tr>
+            <th>Date / Heure</th>
+            <th>Type</th>
+            <th>Montant</th>
+            <th>Description / Réf</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tx of transactions">
+            <td>{{ tx.createdAt | date:'short' }}</td>
+            <td>
+              <span [ngClass]="{'badge-in': tx.type === 'DEPOSIT' || tx.type === 'TRANSFER_IN', 'badge-out': tx.type === 'WITHDRAW' || tx.type === 'TRANSFER_OUT'}">
+                {{ tx.type }}
+              </span>
+            </td>
+            <td [ngClass]="{'text-success': tx.type === 'DEPOSIT' || tx.type === 'TRANSFER_IN', 'text-danger': tx.type === 'WITHDRAW' || tx.type === 'TRANSFER_OUT'}">
+              {{ (tx.type === 'WITHDRAW' || tx.type === 'TRANSFER_OUT' ? -tx.amount : tx.amount) | xof }}
+            </td>
+            <td>{{ tx.description || 'N/A' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
