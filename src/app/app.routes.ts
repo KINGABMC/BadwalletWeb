@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: 'admin/wallets',
-    loadComponent: () => import('./features/wallet-management/wallet-list/wallet-list').then(m => m.WalletList)
+    loadComponent: () => import('./features/wallet-management/wallet-list/wallet-list').then(m => m.WalletListComponent)
   },
   {
     path: 'admin/wallets/create',

@@ -1,1 +1,43 @@
-<p>wallet-list works!</p>
+<div class="list-container">
+  <div class="header-actions">
+    <h2>Gestion des Portefeuilles Clients (Espace Agent)</h2>
+    <button routerLink="/admin/wallets/create" class="btn-primary">Inscrire un Client</button>
+  </div>
+
+  <div *ngIf="isLoading" class="loader">Chargement des portefeuilles...</div>
+
+  <div *ngIf="!isLoading && wallets.length === 0" class="no-data">
+    Aucun portefeuille enregistré pour le moment.
+  </div>
+
+  <table *ngIf="!isLoading && wallets.length > 0" class="data-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Téléphone</th>
+        <th>Email</th>
+        <th>Solde</th>
+        <th>Devise</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let w of wallets">
+        <td>{{ w.id }}</td>
+        <td>{{ w.phoneNumber }}</td>
+        <td>{{ w.email }}</td>
+        <td>{{ w.balance | xof }}</td>
+        <td>{{ w.currency }}</td>
+        <td>
+          <button routerLink="/admin/wallets/actions" class="btn-table">Dépôt/Retrait</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="totalPages > 1" class="pagination">
+    <button [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">Précédent</button>
+    <span>Page {{ currentPage + 1 }} sur {{ totalPages }}</span>
+    <button [disabled]="currentPage === totalPages - 1" (click)="goToPage(currentPage + 1)">Suivant</button>
+  </div>
+</div>
