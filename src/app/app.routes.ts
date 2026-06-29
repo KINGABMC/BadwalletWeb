@@ -7,7 +7,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/wallets/create',
-    loadComponent: () => import('./features/wallet-management/wallet-create/wallet-create').then(m => m.WalletCreate)
+    loadComponent: () => import('./features/wallet-management/wallet-create/wallet-create').then(m => m.WalletCreateComponent)
   },
   {
     path: 'admin/wallets/actions',

@@ -1,1 +1,47 @@
-<p>wallet-create works!</p>
+<div class="create-container">
+  <h2>Inscrire un Nouveau Client</h2>
+  
+  <div *ngIf="errorMessage" class="error-banner">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="walletForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="phoneNumber">Numéro de Téléphone (Format: +22177xxxxxxx)</label>
+      <input id="phoneNumber" type="text" formControlName="phoneNumber" placeholder="+221771234567">
+      <div *ngIf="walletForm.get('phoneNumber')?.touched && walletForm.get('phoneNumber')?.invalid" class="invalid-feedback">
+        Un numéro de téléphone valide au Sénégal (+221 suivi de 9 chiffres) est requis.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Adresse Email</label>
+      <input id="email" type="email" formControlName="email" placeholder="client@domain.com">
+      <div *ngIf="walletForm.get('email')?.touched && walletForm.get('email')?.invalid" class="invalid-feedback">
+        Une adresse email valide est requise.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="initialBalance">Solde Initial</label>
+      <input id="initialBalance" type="number" formControlName="initialBalance">
+      <div *ngIf="walletForm.get('initialBalance')?.touched && walletForm.get('initialBalance')?.invalid" class="invalid-feedback">
+        Le solde initial ne peut pas être négatif.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="currency">Devise</label>
+      <select id="currency" formControlName="currency">
+        <option value="XOF">XOF (FCFA)</option>
+      </select>
+    </div>
+
+    <div class="actions">
+      <button type="button" routerLink="/admin/wallets" class="btn-secondary">Annuler</button>
+      <button type="submit" [disabled]="isSubmitting" class="btn-primary">
+        {{ isSubmitting ? 'Enregistrement...' : 'Créer le Portefeuille' }}
+      </button>
+    </div>
+  </form>
+</div>
