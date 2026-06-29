@@ -11,7 +11,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin/wallets/actions',
-    loadComponent: () => import('./features/wallet-management/wallet-actions/wallet-actions').then(m => m.WalletActions)
+    loadComponent: () => import('./features/wallet-management/wallet-actions/wallet-actions').then(m => m.WalletActionsComponent)
   },
   { path: '', redirectTo: 'admin/wallets', pathMatch: 'full' }
 ];

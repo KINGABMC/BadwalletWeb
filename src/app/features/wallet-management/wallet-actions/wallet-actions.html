@@ -1,1 +1,55 @@
-<p>wallet-actions works!</p>
+<div class="actions-container">
+  <h2>Opérations de Guichet (Dépôt / Retrait)</h2>
+
+  <div class="search-section">
+    <label for="searchPhone">Rechercher le portefeuille d'un client :</label>
+    <div class="search-box">
+      <input id="searchPhone" type="text" [(ngModel)]="searchPhone" placeholder="Ex: +221779998877">
+      <button (click)="onSearch()" [disabled]="isSearching">
+        {{ isSearching ? 'Recherche...' : 'Rechercher' }}
+      </button>
+    </div>
+    <p *ngIf="searchError" class="error-text">{{ searchError }}</p>
+  </div>
+
+  <div *ngIf="successMessage" class="success-banner">{{ successMessage }}</div>
+  <div *ngIf="actionError" class="error-banner">{{ actionError }}</div>
+
+  <div *ngIf="foundWallet" class="operations-grid">
+    
+    <div class="card wallet-details">
+      <h3>Informations Client</h3>
+      <p><strong>ID :</strong> {{ foundWallet.id }}</p>
+      <p><strong>Téléphone :</strong> {{ foundWallet.phoneNumber }}</p>
+      <p><strong>Email :</strong> {{ foundWallet.email }}</p>
+      <p class="balance-display"><strong>Solde Actuel :</strong> <span class="amount">{{ foundWallet.balance | xof }}</span></p>
+    </div>
+
+    <div class="card deposit-card">
+      <h3>Effectuer un Dépôt</h3>
+      <form [formGroup]="depositForm" (ngSubmit)="onDeposit()">
+        <div class="form-group">
+          <label>Montant à créditer (XOF)</label>
+          <input type="number" formControlName="amount" placeholder="Montant">
+        </div>
+        <button type="submit" class="btn-deposit" [disabled]="depositForm.invalid">Créditer le compte</button>
+      </form>
+    </div>
+
+    <div class="card withdraw-card">
+      <h3>Effectuer un Retrait</h3>
+      <form [formGroup]="withdrawForm" (ngSubmit)="onWithdraw()">
+        <div class="form-group">
+          <label>Montant à débiter (XOF)</label>
+          <input type="number" formControlName="amount" placeholder="Montant">
+        </div>
+        <button type="submit" class="btn-withdraw" [disabled]="withdrawForm.invalid">Débiter le compte</button>
+      </form>
+    </div>
+
+  </div>
+
+  <div class="back-link">
+    <button routerLink="/admin/wallets" class="btn-secondary">Retour au listing</button>
+  </div>
+</div>
