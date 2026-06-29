@@ -1,0 +1,52 @@
+<div class="factures-container">
+  <h2>Règlement de Factures & Services</h2>
+
+  <div class="current-balance">
+    Solde utilisable : <strong>{{ balanceStore.balance() | xof }}</strong>
+  </div>
+
+  <div *ngIf="successMessage" class="success-banner">
+    {{ successMessage }}
+  </div>
+  <div *ngIf="errorMessage" class="error-banner">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="factureForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+      <label for="prestataire">Choisir un Prestataire</label>
+      <select id="prestataire" formControlName="prestataire">
+        <option value="">-- Sélectionner un service --</option>
+        <option *ngFor="let p of prestataires" [value]="p.code">{{ p.name }}</option>
+      </select>
+      <div *ngIf="factureForm.get('prestataire')?.touched && factureForm.get('prestataire')?.invalid" class="invalid-feedback">
+        Veuillez sélectionner un prestataire.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="referenceFacture">Référence de Facture / Numéro de Compteur</label>
+      <input id="referenceFacture" type="text" formControlName="referenceFacture" placeholder="Ex: 142489951">
+      <div *ngIf="factureForm.get('referenceFacture')?.touched && factureForm.get('referenceFacture')?.invalid" class="invalid-feedback">
+        Une référence valide (minimum 5 caractères) est requise.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="amount">Montant à payer (XOF)</label>
+      <input id="amount" type="number" formControlName="amount" placeholder="Ex: 10000">
+      <div *ngIf="factureForm.get('amount')?.touched && factureForm.get('amount')?.invalid" class="invalid-feedback">
+        Le montant minimum de paiement est de 100 XOF.
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" routerLink="/client/dashboard" class="btn-secondary">Retour au Dashboard</button>
+      <button type="submit" [disabled]="factureForm.invalid || isSubmitting" class="btn-primary">
+        {{ isSubmitting ? 'Validation en cours...' : 'Payer la facture' }}
+      </button>
+    </div>
+
+  </form>
+</div>
