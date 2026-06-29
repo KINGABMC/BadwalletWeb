@@ -1,0 +1,52 @@
+<div class="transfer-container">
+  <h2>Faire un Transfert d'Argent</h2>
+  
+  <div class="current-balance">
+    Votre solde disponible : <strong>{{ balanceStore.balance() | xof }}</strong>
+  </div>
+
+  <div *ngIf="successMessage" class="success-banner">
+    {{ successMessage }}
+  </div>
+
+  <div *ngIf="errorMessage" class="error-banner">
+    {{ errorMessage }}
+  </div>
+
+  <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+      <label for="sourcePhoneNumber">Numéro Débiteur (Le vôtre)</label>
+      <input id="sourcePhoneNumber" type="text" formControlName="sourcePhoneNumber" readonly>
+    </div>
+
+    <div class="form-group">
+      <label for="destinationPhoneNumber">Numéro du Destinataire (Format: +22177xxxxxxx)</label>
+      <input id="destinationPhoneNumber" type="text" formControlName="destinationPhoneNumber" placeholder="+22177xxxxxxx">
+      <div *ngIf="transferForm.get('destinationPhoneNumber')?.touched && transferForm.get('destinationPhoneNumber')?.invalid" class="invalid-feedback">
+        Veuillez entrer un numéro sénégalais valide (+221 suivi de 9 chiffres).
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="amount">Montant à transférer (XOF)</label>
+      <input id="amount" type="number" formControlName="amount" placeholder="Ex: 5000">
+      <div *ngIf="transferForm.get('amount')?.touched && transferForm.get('amount')?.invalid" class="invalid-feedback">
+        Le montant doit être supérieur à 0 XOF.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Note / Motif du transfert (Optionnel)</label>
+      <input id="description" type="text" formControlName="description" placeholder="Ex: Cadeau, Facture, etc.">
+    </div>
+
+    <div class="actions">
+      <button type="button" routerLink="/client/dashboard" class="btn-secondary">Retour au Dashboard</button>
+      <button type="submit" [disabled]="transferForm.invalid || isSubmitting" class="btn-primary">
+        {{ isSubmitting ? 'Traitement en cours...' : 'Confirmer le Transfert' }}
+      </button>
+    </div>
+
+  </form>
+</div>
